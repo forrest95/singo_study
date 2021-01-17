@@ -47,6 +47,8 @@ func NewRouter() *gin.Engine {
 		//gorm crud test
 		v2.GET("gorm/add", api.GormAdd) //添加
 		v2.GET("gorm/update", api.GormUpdate) //添加
+		v2.GET("gorm/select", api.GormSelect) //查询demo
+		v2.GET("gorm/page", api.GormPage) //查询demo
 
 	}
 	return r

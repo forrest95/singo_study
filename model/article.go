@@ -12,8 +12,12 @@ type Article struct {
 	Author       string
 }
 
+// 将 Article 的表名设置为 `article`
+func (Article) TableName() string {
+	return "article"
+}
 
-// GetUser 用ID获取用户
+// GetArticle 用ID获取article
 func GetArticle(ID interface{}) (Article, error) {
 	var article Article
 	result := DB.First(&article, ID)
@@ -21,8 +25,5 @@ func GetArticle(ID interface{}) (Article, error) {
 }
 
 
-// 将 Article 的表名设置为 `article`
-func (Article) TableName() string {
-	return "article"
-}
+
 

@@ -3,10 +3,10 @@ package api
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/ifconfigure/gorm-paginate/paginage"
 	"github.com/jinzhu/gorm"
 	"singo/model"
 	"singo/serializer"
-	"strconv"
 )
 
 // gorm add 测试接口
@@ -84,6 +84,8 @@ func GormSelect(c *gin.Context){
 	})
 }
 
+//分页参考github https://github.com/ifconfigure/gorm-paginate
+
 //gorm select 分页查询
 func GormPage(c *gin.Context){
 	fmt.Println("进入GormPage方法")
@@ -97,40 +99,35 @@ func GormPage(c *gin.Context){
 	//data:=model.DB.Find(&articles)
 	//fmt.Printf("articles:%v len(articles):%v cap(articles):%v\n", articles, len(articles), cap(articles))
 
-	// LIKE
-	data:=model.DB.Where("title LIKE ?", "%aa%").Find(&articles)
-aa,bb,_:=Pagination(c)
-fmt.Println("***********************")
-fmt.Println(aa)
-fmt.Println(bb)
-	fmt.Println("***********************")
+	// LIKE 查询数据
+	//data:=model.DB.Where("title LIKE ?", "%aa%").Find(&articles)
 
+	//start 分页测试
+	currentPage:=2
+	// 1、Chaining - 链式操作查询
+	data := model.DB.Model(model.Article{}).
+		Order("id desc").
+		Where("title like ?", "%aa%").
+		//Preload("User.Country")
+		Find(&articles)
+
+	//2、use paginate - 调用分页类
+	res, err := paginage.Paginate(data, int(currentPage), &articles)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	//3、output - 输出
 	c.JSON(200, serializer.Response{
 		Code: 444,
-		Msg:  "我是GormPage测试方法 返回！",
-		Data:data,
+		Msg:  "我是GormPage 测试方法 返回！",
+		Data:res,
 	})
+	//end 分页测试
 }
 
-// Pagination is page util
-func Pagination(ctx *gin.Context) (pageStr string, num int, err error) {
-	fmt.Println("进入Pagination方法")
-	limit := ctx.DefaultQuery("page_size", "3")
-	pageNumber := ctx.DefaultQuery("page_number", "2")
-	limitInt, err := strconv.Atoi(limit)
-	if err != nil || limitInt < 0 {
-		return "", 0, err
-		}
-	pageNumberInt, err := strconv.Atoi(pageNumber)
-	if err != nil || pageNumberInt < 0 {
-		return "", 0, err
-		}
-	if pageNumberInt != 0 {
-		pageNumberInt--
-		}
-	offsetInt := limitInt * pageNumberInt
-	pageStr = fmt.Sprintf(" limit %d offset %d", limitInt+1, offsetInt)
-	return pageStr, limitInt, nil
-	}
+
 
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"singo/conf"
 	"singo/server"
 )
@@ -11,5 +12,7 @@ func main() {
 
 	// 装载路由
 	r := server.NewRouter()
+
+	r.LoadHTMLGlob(os.Getenv("VIEWS_PATTERN"))  //fang 自定义添加 加载模板
 	r.Run(":3000")
 }

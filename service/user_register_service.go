@@ -46,12 +46,14 @@ func (service *UserRegisterService) valid() *serializer.Response {
 
 // Register 用户注册
 func (service *UserRegisterService) Register() serializer.Response {
+	fmt.Println("进入user_register_service")
 	user := model.User{
 		Nickname: service.Nickname,
 		UserName: service.UserName,
 		Status:   model.Active,
 	}
-fmt.Println(user)
+	fmt.Println(user)
+	fmt.Println("进入表单验证阶段")
 	// 表单验证
 	if err := service.valid(); err != nil {
 		return *err

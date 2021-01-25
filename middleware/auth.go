@@ -29,7 +29,9 @@ func CurrentUser() gin.HandlerFunc {
 func AuthRequired() gin.HandlerFunc {
 	fmt.Println("进入auth.AuthRequired中间件")
 	return func(c *gin.Context) {
+		fmt.Println("start打印c.get('user')")
 		fmt.Println(c.Get("user"))
+		fmt.Println("end打印c.get('user')")
 		if user, _ := c.Get("user"); user != nil {
 			if _, ok := user.(*model.User); ok {
 				c.Next()

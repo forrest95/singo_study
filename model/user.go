@@ -8,7 +8,7 @@ import (
 // User 用户模型
 type User struct {
 	gorm.Model
-	UserName       string
+	UserName       string `json:"username" form:"username" binding:"required"`
 	PasswordDigest string
 	Nickname       string
 	Status         string

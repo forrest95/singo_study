@@ -22,15 +22,15 @@ func NewRouter() *gin.Engine {
 	{
 		v1.POST("ping", api.Ping)
 
-		// 用户登录
-		v1.POST("user/register", api.UserRegister)
+		// 用户注册
+		v1.POST("user/register",api.UserRegister)
 
 		// 用户登录
 		v1.POST("user/login", api.UserLogin)
 
 		// 需要登录保护的
 		auth := v1.Group("")
-		auth.Use(middleware.AuthRequired())
+		auth.Use(middleware.AuthRequired(),middleware.JWTAuthMiddleware())
 		{
 			// User Routing
 			auth.GET("user/me", api.UserMe)
@@ -42,6 +42,9 @@ func NewRouter() *gin.Engine {
 	// fang  自定义api
 	v2 := r.Group("/api/v2")
 	{
+		v2.POST("/auth",api.AuthHandler)  //登录获取token
+		v2.GET("/home", middleware.JWTAuthMiddleware(), api.AuthhomeHandler) //测试token
+
 		v2.GET("fang/test", api.FangTest)
 		v2.GET("test/byte", api.TestByte)
 
@@ -49,7 +52,7 @@ func NewRouter() *gin.Engine {
 		v2.GET("gorm/add", api.GormAdd) //添加
 		v2.GET("gorm/update", api.GormUpdate) //添加
 		v2.GET("gorm/select", api.GormSelect) //查询demo
-		v2.GET("gorm/page", api.GormPage) //查询demo
+		v2.GET("gorm/page", api.GormPage) //查询demo 分页
 
 		//view crud test  视图层操作crud
 		v2.GET("view/index", api.ViewIndex) //首页展示

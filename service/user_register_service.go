@@ -16,6 +16,7 @@ type UserRegisterService struct {
 
 // valid 验证表单
 func (service *UserRegisterService) valid() *serializer.Response {
+	fmt.Println("进入user_register_valid方法")
 	if service.PasswordConfirm != service.Password {
 		return &serializer.Response{
 			Code: 40001,
@@ -51,7 +52,9 @@ func (service *UserRegisterService) Register() serializer.Response {
 		Nickname: service.Nickname,
 		UserName: service.UserName,
 		Status:   model.Active,
+
 	}
+	fmt.Println("打印用户")
 	fmt.Println(user)
 	fmt.Println("进入表单验证阶段")
 	// 表单验证

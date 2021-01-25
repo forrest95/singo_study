@@ -28,6 +28,7 @@ func UserRegister(c *gin.Context) {
 
 // UserLogin 用户登录接口
 func UserLogin(c *gin.Context) {
+	fmt.Println("进入用户登录方法")
 	var service service.UserLoginService
 	if err := c.ShouldBind(&service); err == nil {
 		res := service.Login(c)

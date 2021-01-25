@@ -11,7 +11,7 @@ func ViewIndex(c *gin.Context) {
 	fmt.Println("进入ViewIndex方法")
 
 	c.HTML(http.StatusOK, "index/index.html", gin.H{
-		"msg": "easy gin",
+		"msg": "easy singo",
 	})
 
 }

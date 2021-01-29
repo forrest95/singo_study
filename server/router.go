@@ -56,13 +56,13 @@ func NewRouter() *gin.Engine {
 
 		//view crud test  视图层操作crud
 		v2.GET("view/index", api.ViewIndex) //首页展示
+		v2.GET("view/page", api.ViewPage) //视图层 分页demo
 
 		//sqlx crud test
 		v2.GET("sqlx/add", api.SqlxAdd) //添加
 		v2.GET("sqlx/update", api.SqlxUpdate) //添加
 		v2.GET("sqlx/select", api.SqlxSelect) //查询demo
 		v2.GET("sqlx/page", api.SqlxPage) //查询demo
-
 
 		v2.GET("user/checkpwd", api.UserCheckPwd) //查询demo
 

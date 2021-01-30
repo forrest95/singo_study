@@ -28,27 +28,30 @@ func ViewIndex(c *gin.Context) {
 func ViewPage(c *gin.Context){
 	fmt.Println("进入ViewPage方法")
 
+	//接收分页参数
+	currentPage, _ :=strconv.Atoi(c.DefaultQuery("page","1"))
+	pageSize, _ :=strconv.Atoi(c.DefaultQuery("pageSize","5"))
+
+	fmt.Println(currentPage,pageSize)
+
 	//分页一 参考文档 https://my.oschina.net/tongjh/blog/1800443
-	var paging=util.CreatePaging(3,5,365);
+	var paging=util.CreatePaging(int64(currentPage), int64(pageSize),365);
 	fmt.Println(333333333)
 	fmt.Println(reflect.TypeOf(paging))
 	fmt.Println(paging)
 	fmt.Println(333333333)
 
 	// 分页二  参考文档 https://blog.csdn.net/ciwei_ice/article/details/50429835
-	data2:=Paginator(3,5,365)
+	data2:=Paginator(currentPage,pageSize,365)
 	fmt.Println(11111)
 	fmt.Println(reflect.TypeOf(data2))
 	fmt.Println(data2)
 	fmt.Println(11111)
 
+	pageStr, a, b :=util.GetPageStr(c, c.DefaultQuery("pageSize","5"), c.DefaultQuery("page","1"))
+	fmt.Println("GetPageStr",pageStr,a,b)
 
-	pageStr, a, b :=Pagination(c)
-	fmt.Println(2222222)
-	fmt.Println(pageStr,a,b)
-	fmt.Println(2222222)
-
-	c.HTML(http.StatusOK, "view/index", gin.H{
+	c.HTML(http.StatusOK, "view/page", gin.H{
 		"msg": "ViewPage 视图层分页",
 		"paging":paging,
 		"pageStr":pageStr,
@@ -106,25 +109,7 @@ func Paginator(page, prepage int, nums int64) map[string]interface{} {
 	return paginatorMap
 }
 
-// Pagination is page util
-func Pagination(ctx *gin.Context) (pageStr string, num int, err error) {
-	limit := ctx.DefaultQuery("page_size", "5")
-	pageNumber := ctx.DefaultQuery("page_number", "5")
-	limitInt, err := strconv.Atoi(limit)
-	if err != nil || limitInt < 0 {
-		return "", 0, err
-		}
-	pageNumberInt, err := strconv.Atoi(pageNumber)
-	if err != nil || pageNumberInt < 0 {
-		return "", 0, err
-		}
-	if pageNumberInt != 0 {
-		pageNumberInt--
-		}
-	offsetInt := limitInt * pageNumberInt
-	pageStr = fmt.Sprintf(" limit %d offset %d", limitInt, offsetInt)
-	return pageStr, limitInt, nil
-	}
+
  
 
 

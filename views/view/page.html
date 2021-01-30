@@ -1,4 +1,4 @@
-{{ define "view/index" }}
+{{ define "view/page" }}
 
 <!doctype html>
 <html lang="en">
@@ -16,40 +16,46 @@
         h1 {
             text-align: center;
         }
+        .active{
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <h1>{{ .msg }}</h1>
     <h2>view/index.html</h2>
     <hr>
-<button class="btn btn-success">我是bootstrap按钮a</button>
+    <button class="btn btn-success">我是bootstrap按钮</button>
     <hr>
-    <span>分页一</span><br>
+    <span>分页一(推荐)</span><br>
+    <span>共{{.paging.Total}}条记录 共记{{.paging.PageCount}} 页 当前页  {{.paging.Page}}</span>
+    <br>
     <ul class="pagination">
         <li>
             <a href="?page=1&pageSize={{.paging.Pagesize}}" class="not">«</a>
         </li>
         {{range $k,$v:=.paging.Nums}}
-            <li>
-                <a href="?page={{$v}}&pageSize={{$.paging.Pagesize}}" class="{{if eq $v $.paging.Page}}active{{end}}">{{$v}}</a>
+            <li class="{{if eq $v $.paging.Page}}active {{end}}">
+                <a href="?page={{$v}}&pageSize={{$.paging.Pagesize}}" >{{$v}}</a>
             </li>
         {{end}}
         <li>
             <a href="?page={{.paging.PageCount}}&pageSize={{.paging.Pagesize}}">»</a>
         </li>
     </ul>
-
+    <br>
+    <span>{{.pageStr}}</span>
     <hr>
     <span>分页二</span>
     <div class="am-cf">
         共{{.totals}}条记录 共记{{.paginator.totalpages}} 页 当前页  {{.paginator.currpage}}
         <div class="am-fr">
             <ul class="am-pagination pagination">
-                <li class=""><a href="/clubadmin/topics/{{.paginator.firstpage}}">«</a></li>
+                <li class=""><a href="?page={{.paginator.firstpage}}">«</a></li>
                 {{range $index,$page := .paginator.pages}}
-                    <li  {{if eq $.paginator.currpage $page }}class="am-active"{{end}}><a href="/clubadmin/topics/{{$page}}">{{$page}}</a></li>
+                    <li  {{if eq $.paginator.currpage $page }}class="am-active active"{{end}}><a href="?page={{$page}}">{{$page}}</a></li>
                 {{end}}
-                <li><a href="/clubadmin/topics/{{.paginator.lastpage}}">»</a></li>
+                <li><a href="?page={{.paginator.lastpage}}">»</a></li>
             </ul>
         </div>
     </div>

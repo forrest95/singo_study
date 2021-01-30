@@ -1,7 +1,10 @@
 package util
 
 import (
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"math"
+	"strconv"
 )
 
 func CreatePaging(page, pagesize, total int64) *Paging {
@@ -57,4 +60,25 @@ func (this *Paging) setNums() {
 	for i := begin; i <= end; i++ {
 		this.Nums = append(this.Nums, i)
 	}
+}
+
+//获取分页sql limit %d offset %d
+// Pagination is page util 参考文档 https://www.cnblogs.com/lyp0626/p/12056143.html
+func GetPageStr(ctx *gin.Context,limit,pageNumber string) (pageStr string, num int, err error) {
+	//limit := ctx.DefaultQuery("page_size", "5")
+	//pageNumber := ctx.DefaultQuery("page_number", "5")
+	limitInt, err := strconv.Atoi(limit)
+	if err != nil || limitInt < 0 {
+		return "", 0, err
+	}
+	pageNumberInt, err := strconv.Atoi(pageNumber)
+	if err != nil || pageNumberInt < 0 {
+		return "", 0, err
+	}
+	if pageNumberInt != 0 {
+		pageNumberInt--
+	}
+	offsetInt := limitInt * pageNumberInt
+	pageStr = fmt.Sprintf(" limit %d offset %d", limitInt, offsetInt)
+	return pageStr, limitInt, nil
 }

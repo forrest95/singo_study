@@ -65,7 +65,7 @@ func (this *Paging) setNums() {
 //获取分页sql limit %d offset %d
 // Pagination is page util 参考文档 https://www.cnblogs.com/lyp0626/p/12056143.html
 func GetPageStr(ctx *gin.Context,limit,pageNumber string) (pageStr string, num int, err error) {
-	//limit := ctx.DefaultQuery("page_size", "5")
+	//limit := ctx.DefaultQuery("page_size", "5")  //修改page_size 和page_num参数获取方式
 	//pageNumber := ctx.DefaultQuery("page_number", "5")
 	limitInt, err := strconv.Atoi(limit)
 	if err != nil || limitInt < 0 {

@@ -40,7 +40,7 @@ func Database(connString string) {
 
 //初始化sqlx //fang 自定义
 func InitDB_sqlx(connString string) (err error) {
-	fmt.Println("cccccccccccccccccccccc初始化了InitDB_sqlx")
+	fmt.Println("初始化了InitDB_sqlx")
 	dsn := connString
 	// 也可以使用MustConnect连接不成功就panic
 	Sqlx_db, err = sqlx.Connect("mysql", dsn)

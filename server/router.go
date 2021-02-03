@@ -77,6 +77,9 @@ func NewRouter() *gin.Engine {
 		mrouter.HandleDisconnect(api.HandleDisconnect)
 
 
+		v2.GET("cache/test",api.CacheTest) //缓存测试
+
+
 	}
 	return r
 }

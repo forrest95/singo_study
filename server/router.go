@@ -39,7 +39,6 @@ func NewRouter() *gin.Engine {
 		}
 	}
 
-
 	// fang  自定义api
 	v2 := r.Group("/api/v2")
 	{
@@ -67,7 +66,7 @@ func NewRouter() *gin.Engine {
 
 		v2.GET("user/checkpwd", api.UserCheckPwd) //查询demo
 
-		//websocket测试
+		//start websocket测试
 		//v2.GET("/ws/test", api.WebSocket)
 		v2.GET("/ws/test", func(c *gin.Context) {
 			mrouter.HandleRequest(c.Writer, c.Request)
@@ -75,11 +74,11 @@ func NewRouter() *gin.Engine {
 		mrouter.HandleMessage(api.HandleMessage)
 		mrouter.HandleConnect(api.HandleConnect)
 		mrouter.HandleDisconnect(api.HandleDisconnect)
-
+		//end websocket测试
 
 		v2.GET("cache/test",api.CacheTest) //缓存测试
 
-
 	}
+
 	return r
 }

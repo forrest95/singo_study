@@ -2,25 +2,21 @@ package api
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"singo/serializer"
 	"time"
 )
 
 // cron 定时器测试
-func CronTest(c *gin.Context) {
-	fmt.Println("进入CronTest方法")
-
-	c.JSON(200, serializer.Response{
-		Code: 0,
-		Msg:  "我是CronTest测试方法 返回！",
-	})
-
+func CronTest() {
+	fmt.Println("进入CronTest方法1 "+time.Now().Format("2006-01-02 15:04:05"))
 }
 
-// cron 定时器测试
-func CronTest1() {
-	fmt.Println("进入CronTest方法1 "+time.Now().Format("2006-01-02 15:04:05"))
+func Cron(){
+	fmt.Println("进入CronCron方法")
+	//定时器测试 如果是restfulapi开发 可屏蔽该功能
+	for range time.Tick(time.Millisecond*1000*60){
+		fmt.Println("Hello 定时器: "+time.Now().Format("2006-01-02 15:04:05"))
+	}
+
 }
 
 
